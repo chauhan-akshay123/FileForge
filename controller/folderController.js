@@ -39,7 +39,7 @@ const updateFolder = async (req, res) => {
      // Update Folder details
      folder.name = name || folder.name;
      folder.maxFileLimit = maxFileLimit || folder.maxFileLimit;
-     await Folder.save();
+     await folder.save();
 
      return res.status(200).json({ message: "Folder updated successfully.", folder });
      } catch(error){
@@ -70,6 +70,10 @@ const deleteFolder = async (req, res) => {
 const getFolder = async (req, res) => {
   try{
     const { folderId } = req.params;
+
+    if (!isUUID(folderId)) {
+      return res.status(400).json({ message: "Invalid folder ID" });
+    }
 
     const folder = await Folder.findByPk(folderId, { include: File });
     if(!folder) return res.status(404).json({ message: "Folder not found" });

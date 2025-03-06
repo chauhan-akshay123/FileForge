@@ -37,6 +37,63 @@ const uploadFile = async (req, res) => {
     }
 };
 
+// get files in a folder
+const getFilesInFolder = async (req, res) => {
+  try{
+    const { folderId } = req.params;
+    const files = await File.findAll({ where: { folderId } });
+    return res.status(200).json(files);
+  } catch(error){
+     console.log("Error in getting files in a folder: ", error);
+     return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// sort files by Size or Recency
+const sortFiles = async (req, res) => {
+  try{
+    const { folderId } = req.params;
+    const { sort } = req.query;
+    if(!['size', 'uploadedAt'].includes(sort)){
+       return res.status(400).json({ message: "Invalid sort para,meter" }); 
+    } 
+    const files = await File.findAll({ where: { folderId }, order: [[sort, 'ASC']] });
+    return res.json(files);
+  } catch(error){
+     console.log("Error in sorting files: ", error);
+     return res.status(500).json({ message: "Server error", error: error.message });
+  }
+}
+
+// get File by Type Across Folders
+const getFilesByType = async (req, res) => {
+  try{
+    const { type } = req.query;
+    if(!type) return res.status(400).json({ message: "File type is required" });
+    
+    const files = await File.findAll({ where: { type } });
+    return res.status(200).json(files);
+  } catch(error){
+     console.log("Error in fetching files by type: ", error);
+     return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// get file metadata
+const getFileMetaData = async (req, res) => {
+  try{
+   const { folderId } = req.params;
+   const files = await File.findAll({
+    where: { folderId },
+    attributes: ['fileId', 'name', 'size', 'description']
+   });
+   return res.json({ files });  
+  } catch(error){
+     console.log("Error in getting file metaData: ", error);
+     return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 // update file description
 const updateFileDescription = async (req, res) => {
   try{
@@ -73,4 +130,4 @@ const deleteFile = async (req, res) => {
     }
 };
 
-module.exports = { uploadFile, updateFileDescription, deleteFile };
+module.exports = { uploadFile, updateFileDescription, deleteFile, getFilesInFolder, getFilesByType, getFileMetaData, sortFiles };

@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
         tableName: "folders",
-        timeStamps: true,
+        timestamps: true,
     }
     );
 

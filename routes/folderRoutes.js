@@ -3,10 +3,10 @@ const router = express.Router();
 const { createFolder, updateFolder, deleteFolder, getFolder, getAllFolders } = require("../controller/folderController");
 
 // Folder Routes
-router.post('/folder/create', createFolder);
-router.put('/folders/:folderId', updateFolder);
-router.delete('/folders/:folderId', deleteFolder);
-router.get('/folders/:folderId', getFolder);
-router.get('/folders', getAllFolders);
+router.post('/create', createFolder);
+router.put('update/:folderId', updateFolder);
+router.delete('delete/:folderId', deleteFolder);
+router.get('/:folderId', getFolder);
+router.get('all/folders', getAllFolders);
 
 module.exports = router;

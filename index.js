@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 app.use("/folders", folderRoutes);
-app.use("/files", fileRoutes);
+app.use("/api", fileRoutes);
 
 // Database Connection
 sequelize.sync()

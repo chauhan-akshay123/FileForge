@@ -1,4 +1,5 @@
 const { Folder, File } = require("../models");
+const { Op } = require("@sequelize/core");
 
 // Create Folder
 const createFolder = async (req, res) => {
@@ -68,20 +69,23 @@ const deleteFolder = async (req, res) => {
 
 // Get Folder details
 const getFolder = async (req, res) => {
-  try{
+  try {
     const { folderId } = req.params;
 
-    if (!isUUID(folderId)) {
-      return res.status(400).json({ message: "Invalid folder ID" });
+    // Validate if folderId is a valid UUID (Fixing the isUUID issue)
+    if (!/^[0-9a-fA-F-]{36}$/.test(folderId)) {
+      return res.status(400).json({ message: "Invalid folder ID format" });
     }
 
     const folder = await Folder.findByPk(folderId, { include: File });
-    if(!folder) return res.status(404).json({ message: "Folder not found" });
+    if (!folder) {
+      return res.status(404).json({ message: "Folder not found" });
+    }
 
-    return res.status(200).json(folder); 
-  } catch(error){
-     console.log("Error in fetching a folder by Id: ", error);
-     return res.status(500).json({ message: "Server error", error: error.message });
+    return res.status(200).json(folder);
+  } catch (error) {
+    console.error("Error in fetching a folder by ID:", error);
+    return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

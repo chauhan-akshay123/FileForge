@@ -9,6 +9,7 @@
   "author": "Akshay Chauhan",
   "license": "ISC",
   "dependencies": {
+    "@sequelize/core": "^7.0.0-alpha.45",
     "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

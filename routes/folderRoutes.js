@@ -4,9 +4,9 @@ const { createFolder, updateFolder, deleteFolder, getFolder, getAllFolders } = r
 
 // Folder Routes
 router.post('/folder/create', createFolder);
-router.put('/folder/:folderId', updateFolder);
-router.delete('/folder/:folderId', deleteFolder);
-router.get('/folder/:folderId', getFolder);
-router.get('/folder', getAllFolders);
+router.put('/folders/:folderId', updateFolder);
+router.delete('/folders/:folderId', deleteFolder);
+router.get('/folders/:folderId', getFolder);
+router.get('/folders', getAllFolders);
 
 module.exports = router;

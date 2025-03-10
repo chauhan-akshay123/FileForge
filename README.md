@@ -222,7 +222,77 @@ FileForge is a robust **Document Management System (DMS)** that allows users to 
   "message": "File deleted successfully"
 }
 ```
-  
+ 
+# Database Design
+
+This section outlines the database schema used in this project. The application uses a relational database with two main entities: Folders and Files.
+
+## Data Models
+
+### Folder Model
+
+The `Folder` model represents a collection of files with specific properties:
+
+| Field         | Type                        | Constraints                     | Description                              |
+|---------------|-----------------------------|---------------------------------|------------------------------------------|
+| folderId      | UUID                        | Primary Key, Not Null, Unique   | Unique identifier for each folder        |
+| name          | STRING                      | Not Null, Not Empty             | Name of the folder                       |
+| type          | ENUM('csv','img','pdf','ppt')| Not Null                      | Type of files the folder can contain     |
+| maxFileLimit  | STRING                      | Not Null                        | Maximum number of files allowed          |
+| createdAt     | DATE                        | Auto-generated                  | Timestamp when folder was created        |
+| updatedAt     | DATE                        | Auto-generated                  | Timestamp when folder was last updated   |
+
+### File Model
+
+The `File` model represents individual files stored within folders:
+
+| Field         | Type                        | Constraints                     | Description                              |
+|---------------|-----------------------------|---------------------------------|------------------------------------------|
+| fileId        | UUID                        | Primary Key, Not Null, Unique   | Unique identifier for each file          |
+| folderId      | UUID                        | Foreign Key, Not Null           | Reference to parent folder               |
+| name          | STRING                      | Not Null                        | Name of the file                         |
+| description   | TEXT                        | Nullable                        | Optional description of the file         |
+| type          | STRING                      | Not Null                        | Type/format of the file                  |
+| size          | INTEGER                     | Not Null                        | Size of the file in bytes                |
+| uploadedAt    | DATE                        | Not Null, Default: Current time | Timestamp when file was uploaded         |
+
+## Relationships
+
+- **One-to-Many**: A Folder can contain multiple Files (1:N)
+  - The `folderId` in the `File` model references the `folderId` in the `Folder` model
+  - When a Folder is deleted, all associated Files are automatically deleted (CASCADE)
+
+## Entity-Relationship Diagram
+
+```
++----------------+       +----------------+
+|     Folder     |       |      File      |
++----------------+       +----------------+
+| PK: folderId   |       | PK: fileId     |
+| name           |       | FK: folderId   |
+| type           | 1---< | name           |
+| maxFileLimit   |       | description    |
+| createdAt      |       | type           |
+| updatedAt      |       | size           |
++----------------+       | uploadedAt     |
+                         +----------------+
+```
+
+## Schema Details
+
+- **Table Names**: "folders" and "files"
+- **Timestamps**: 
+  - Folder model includes automatic timestamps (createdAt, updatedAt)
+  - File model does not use automatic timestamps, but tracks uploadedAt manually
+- **Validation**: Folder names cannot be empty strings
+- **Referential Integrity**: Foreign key constraints ensure data consistency
+  - When a folder is deleted, all associated files are automatically deleted (CASCADE)
+  - When a folder is updated, the changes are reflected in associated files (CASCADE)
+
+## Technologies
+
+This database schema is implemented using:
+- Sequelize ORM
 
 ## 📝 License
 This project is licensed under the **MIT License**.

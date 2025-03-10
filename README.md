@@ -280,6 +280,8 @@ The `File` model represents individual files stored within folders:
                          +----------------+
 ```
 
+![Supabase](Supabase.png)
+
 ## Schema Details
 
 - **Table Names**: "folders" and "files"

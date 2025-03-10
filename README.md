@@ -115,6 +115,7 @@ FileForge is a robust **Document Management System (DMS)** that allows users to 
 
 #### Delete Folder
 **Endpoint:** `DELETE /folders/delete/:folderId`
+![Delete Folder](Delete_Folder.png)
 
 ---
 

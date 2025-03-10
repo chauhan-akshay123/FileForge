@@ -111,6 +111,7 @@ FileForge is a robust **Document Management System (DMS)** that allows users to 
 
 #### Update Folder
 **Endpoint:** `PUT /folders/update/:folderId`
+![Update Folder](Screenshots\Update_Folder.png)
 
 #### Delete Folder
 **Endpoint:** `DELETE /folders/delete/:folderId`

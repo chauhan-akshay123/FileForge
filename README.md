@@ -57,6 +57,173 @@ FileForge is a robust **Document Management System (DMS)** that allows users to 
    npm start
    ```
 
+ ## API Endpoints
+### 1. Folder Management
+#### Create a Folder
+**Endpoint:** `POST /folders/create`
+
+**Request:**
+```json
+{
+  "name": "Project Documents",
+  "type": "application/pdf"
+}
+```
+**Response:**
+```json
+{
+  "message": "Folder created successfully",
+  "folder": {
+    "folderId": "1234-5678-9101",
+    "name": "Project Documents",
+    "type": "application/pdf",
+    "createdAt": "2025-03-06T12:00:00Z"
+  }
+}
+```
+
+#### Get All Folders
+**Endpoint:** `GET /folders/all`
+
+**Response:**
+```json
+[
+  {
+    "folderId": "1234-5678-9101",
+    "name": "Project Documents",
+    "type": "application/pdf"
+  }
+]
+```
+
+#### Get Folder by ID
+**Endpoint:** `GET /folders/:folderId`
+
+**Response:**
+```json
+{
+  "folderId": "1234-5678-9101",
+  "name": "Project Documents",
+  "type": "application/pdf",
+  "files": []
+}
+```
+
+#### Update Folder
+**Endpoint:** `PUT /folders/update/:folderId`
+
+#### Delete Folder
+**Endpoint:** `DELETE /folders/delete/:folderId`
+
+---
+
+### 2. File Management
+#### Upload a File
+**Endpoint:** `POST /folders/:folderId/files`
+
+**Request:**
+- **Headers**: `Content-Type: multipart/form-data`
+- **Body**: Form-data with `file` (file upload) and `description` (string)
+
+**Response:**
+```json
+{
+  "message": "File uploaded successfully.",
+  "file": {
+    "fileId": "abcd-efgh-ijkl",
+    "folderId": "1234-5678-9101",
+    "name": "document.pdf",
+    "type": "application/pdf",
+    "size": 2048,
+    "uploadedAt": "2025-03-06T12:05:00Z"
+  }
+}
+```
+
+#### Get Files in a Folder
+**Endpoint:** `GET /folders/:folderId/files`
+
+**Response:**
+```json
+[
+  {
+    "fileId": "abcd-efgh-ijkl",
+    "folderId": "1234-5678-9101",
+    "name": "document.pdf",
+    "type": "application/pdf",
+    "size": 2048,
+    "uploadedAt": "2025-03-06T12:05:00Z"
+  }
+]
+```
+
+#### Get Files by Type
+**Endpoint:** `GET /files?type=pdf`
+
+**Response:**
+```json
+{
+  "files": [
+    {
+      "fileId": "abcd-efgh-ijkl",
+      "folderId": "1234-5678-9101",
+      "name": "document.pdf",
+      "type": "application/pdf",
+      "size": 2048,
+      "uploadedAt": "2025-03-06T12:05:00Z"
+    }
+  ]
+}
+```
+
+#### Get File Metadata
+**Endpoint:** `GET /folders/:folderId/files/metadata`
+
+**Response:**
+```json
+{
+  "files": [
+    {
+      "fileId": "abcd-efgh-ijkl",
+      "name": "document.pdf",
+      "size": 2048,
+      "description": "Project Proposal"
+    }
+  ]
+}
+```
+
+#### Update File Description
+**Endpoint:** `PUT /folders/:folderId/files/:fileId`
+
+**Request:**
+```json
+{
+  "description": "Updated project document"
+}
+```
+**Response:**
+```json
+{
+  "message": "File description updated successfully",
+  "file": {
+    "fileId": "abcd-efgh-ijkl",
+    "description": "Updated project document"
+  }
+}
+```
+
+#### Delete File
+**Endpoint:** `DELETE /folders/:folderId/files/:fileId`
+
+**Response:**
+```json
+{
+  "message": "File deleted successfully"
+}
+```
+  
+
 ## 📝 License
 This project is licensed under the **MIT License**.
 
